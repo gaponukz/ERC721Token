@@ -7,8 +7,9 @@ contract ERC721 {
     mapping(uint256 => address) tokenApprovals;
     mapping(address => mapping(address => bool)) operatorApprovals;
 
-    event Transfer(address indexed from, address indexed to, uint256 tokens);
-    event Approval(address indexed tokenOwner, address indexed spender, uint256 tokens);
+    event Transfer(address indexed _from, address indexed _to, uint256 _tokens);
+    event Approval(address indexed _tokenOwner, address indexed _spender, uint256 _tokens);
+    event ApprovalForAll(address indexed _owner, address indexed _operator, bool _approved);
 
     constructor () {
         owners[0] = msg.sender;
@@ -39,6 +40,7 @@ contract ERC721 {
     function setApprovalForAll(address _operator, bool _approved) external {
         require(msg.sender != _operator, "ERC721: approve to caller");
         operatorApprovals[msg.sender][_operator] = _approved;
+        emit ApprovalForAll(msg.sender, _operator, _approved);
     }
 
     function getApproved(uint256 _tokenId) public view returns (address) {
